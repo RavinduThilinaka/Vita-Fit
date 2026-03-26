@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'users',
     'knox',
-    'workout'
+    'workout',
+    'diet_plan',
+    'progress'
 ]
 
 MIDDLEWARE = [

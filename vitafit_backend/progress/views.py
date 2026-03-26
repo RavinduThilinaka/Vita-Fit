@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework import generics
+from .models import Progress
+from .serializers import ProgressSerializer
 
-# Create your views here.
+class ProgressListCreateView(generics.ListCreateAPIView):
+    queryset = Progress.objects.all()
+    serializer_class = ProgressSerializer
+
+class ProgressRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Progress.objects.all()
+    serializer_class = ProgressSerializer
