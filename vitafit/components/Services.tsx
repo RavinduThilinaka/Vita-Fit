@@ -97,35 +97,50 @@ export default function Services() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: { staggerChildren: 0.15 }
+            }
+          }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000"
+        >
           {services.map((service, index) => (
-            <Link key={service.title} href={service.href}>
+            <Link key={service.title} href={service.href} className="block group">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group relative h-full bg-foreground/5 border border-foreground/10 rounded-3xl p-8 hover:bg-foreground/10 transition-colors duration-300 overflow-hidden cursor-pointer shadow-sm hover:shadow-xl"
+                variants={{
+                  hidden: { opacity: 0, y: 40, rotateX: 20 },
+                  show: { opacity: 1, y: 0, rotateX: 0, transition: { type: "spring", bounce: 0.4, duration: 0.8 } }
+                }}
+                className="relative h-full bg-foreground/5 border border-foreground/10 rounded-3xl p-8 hover:bg-foreground/10 overflow-hidden cursor-pointer transform transition-all duration-500 group-hover:-translate-y-3 group-hover:shadow-[0_20px_40px_-20px_rgba(239,68,68,0.3)] group-hover:border-primary/30"
               >
                 {/* Hover gradient line at top */}
                 <div className={`absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${service.color} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`} />
                 
-                <div className={`w-14 h-14 rounded-2xl ${service.bgLight} flex items-center justify-center mb-6 transform group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-sm`}>
-                  <service.icon className={`w-7 h-7 ${service.iconColor}`} />
+                {/* Subtle radial glow bound to hover */}
+                <div className={`absolute -right-20 -top-20 w-40 h-40 rounded-full blur-[80px] opacity-0 group-hover:opacity-20 transition-opacity duration-700 bg-gradient-to-br ${service.color}`} />
+
+                <div className={`w-16 h-16 rounded-2xl ${service.bgLight} flex items-center justify-center mb-6 transform group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500 shadow-sm relative z-10`}>
+                  <service.icon className={`w-8 h-8 ${service.iconColor}`} />
                 </div>
                 
-                <h3 className="text-xl font-bold text-foreground mb-3 tracking-wide">{service.title}</h3>
-                <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-6">
+                <h3 className="text-2xl font-bold text-foreground mb-4 tracking-wide relative z-10 group-hover:text-primary transition-colors duration-300">{service.title}</h3>
+                <p className="text-gray-500 dark:text-gray-400 text-base leading-relaxed mb-8 relative z-10">
                   {service.description}
                 </p>
 
-                <div className="flex items-center text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-                  Open Tool <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
+                <div className="flex items-center text-sm font-bold text-foreground group-hover:text-primary transition-colors relative z-10 tracking-widest uppercase">
+                  Open Tool <ArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" />
                 </div>
               </motion.div>
             </Link>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

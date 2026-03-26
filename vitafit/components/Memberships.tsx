@@ -37,23 +37,38 @@ export default function Memberships() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 }
+            }
+          }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto"
+        >
           {plans.map((plan, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className={`relative bg-background p-8 rounded-3xl border transition-all hover:-translate-y-2 ${plan.popular ? 'border-primary shadow-2xl shadow-primary/20' : 'border-foreground/10 hover:shadow-xl hover:shadow-white/5'}`}
+              variants={{
+                hidden: { opacity: 0, y: 50, scale: 0.95 },
+                show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", bounce: 0.4, duration: 0.8 } }
+              }}
+              className={`relative bg-background p-8 rounded-3xl border transition-all duration-500 overflow-hidden group hover:-translate-y-3 ${plan.popular ? 'border-primary shadow-[0_20px_40px_-15px_rgba(239,68,68,0.3)]' : 'border-foreground/10 hover:shadow-2xl hover:border-foreground/30'}`}
             >
+              {/* Animated glowing background on hover */}
+              <div className={`absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none ${plan.popular ? 'opacity-50' : ''}`} />
+
               {plan.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-bold tracking-wide">
+                <div className="absolute top-0 right-8 bg-primary text-primary-foreground px-4 py-2 rounded-b-xl text-xs font-black tracking-widest shadow-lg shadow-primary/30 z-10">
                   MOST POPULAR
                 </div>
               )}
-              <h3 className="text-2xl font-bold mb-4">{plan.name}</h3>
-              <div className="mb-6 flex items-baseline text-5xl font-extrabold flex-wrap">
+              <h3 className="text-2xl font-bold mb-4 relative z-10">{plan.name}</h3>
+              <div className="mb-6 flex items-baseline text-5xl font-extrabold flex-wrap relative z-10">
                 <span className="text-2xl font-medium text-gray-500 mr-2">Rs.</span>
                 {plan.price}
               </div>
@@ -72,7 +87,7 @@ export default function Memberships() {
               </Link>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

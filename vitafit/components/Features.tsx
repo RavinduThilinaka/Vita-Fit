@@ -39,26 +39,41 @@ export default function Features() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 }
+            }
+          }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid md:grid-cols-3 gap-8"
+        >
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className="bg-foreground/5 p-8 rounded-2xl border border-foreground/10 hover:border-primary/50 transition-colors group relative overflow-hidden flex flex-col items-center text-center scale-100 hover:scale-[1.02]"
+              variants={{
+                hidden: { opacity: 0, y: 50, scale: 0.9 },
+                show: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", bounce: 0.5, duration: 1 } }
+              }}
+              className="bg-foreground/5 p-8 rounded-3xl border border-foreground/10 hover:border-primary/50 transition-colors group relative overflow-hidden flex flex-col items-center text-center transform hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(239,68,68,0.2)]"
             >
-              <div className="w-16 h-16 bg-background rounded-full flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
+              {/* Animated glowing background on hover */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              
+              <div className="w-20 h-20 bg-background rounded-full flex items-center justify-center mb-8 shadow-md group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 relative z-10">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <h3 className="text-2xl font-bold mb-4 relative z-10">{feature.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400 relative z-10 leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
