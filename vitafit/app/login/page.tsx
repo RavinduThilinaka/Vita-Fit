@@ -4,14 +4,41 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Mail, Lock, Dumbbell, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { login } from "./actions";
 
 export default function Login() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 2000);
+    setError("");
+
+    try {
+      const result = await login(formData);
+      
+      if (result.success && result.user) {
+        // Role-based redirect
+        if (result.user.role === "admin") {
+          router.push("/admin-dashboard");
+        } else {
+          router.push("/");
+        }
+      } else {
+        setError(result.error || "Invalid email or password. Please try again.");
+      }
+    } catch (error) {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,6 +71,12 @@ export default function Login() {
           <p className="text-gray-400 text-sm">Enter your credentials to access your account.</p>
         </div>
 
+        {error && (
+          <div className="mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-400 text-sm text-center">
+            {error}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <label className="text-sm font-semibold text-gray-300 ml-1">Email Address</label>
@@ -54,6 +87,8 @@ export default function Login() {
               <input 
                 type="email" 
                 required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-11 pr-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:bg-white/10 transition-all"
                 placeholder="name@example.com"
               />
@@ -72,6 +107,8 @@ export default function Login() {
               <input 
                 type="password" 
                 required
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 className="w-full bg-white/5 border border-white/10 rounded-2xl py-3.5 pl-11 pr-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:bg-white/10 transition-all"
                 placeholder="••••••••"
               />
