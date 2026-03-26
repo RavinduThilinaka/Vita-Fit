@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'diet_plan',
     'progress',
     'nutrition',
-    'notifications'
+    'notifications',
+    'tips'
 ]
 
 MIDDLEWARE = [
