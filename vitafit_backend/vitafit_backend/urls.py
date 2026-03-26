@@ -14,5 +14,6 @@ urlpatterns = [
     path('api/progress/', include('progress.urls')),
     path('api/progress/', include('nutrition.urls')),
     path('api/nutrition/', include('nutrition.urls')),
+    path('api/notifications/', include('notifications.urls')),
 
 ]
