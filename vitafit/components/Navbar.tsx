@@ -1,13 +1,20 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Menu, X, Dumbbell, User } from "lucide-react";
+import { Menu, X, Dumbbell, User, Bell } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
+
+  const notifications = [
+    { title: "Workout Reminder", desc: "Leg day begins in 1 hour.", time: "1h ago", unread: true },
+    { title: "Membership Active", desc: "Your Elite pass is live.", time: "2h ago", unread: true },
+    { title: "Diet Logged", desc: "Breakfast logged successfully.", time: "1d ago", unread: false }
+  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +41,7 @@ export default function Navbar() {
                 { name: 'Services', href: '/#services' },
                 { name: 'Memberships', href: '/#memberships' },
                 { name: 'Locations', href: '/#locations' },
+                { name: 'Contact', href: '/#contact' },
               ].map((item) => (
                 <Link 
                   key={item.name} 
@@ -51,6 +59,57 @@ export default function Navbar() {
                 <Link href="/register" className="bg-gradient-to-r from-primary to-rose-500 hover:from-primary hover:to-rose-400 text-white px-8 py-3 rounded-full font-bold transition-all transform hover:scale-105 hover:-translate-y-1 shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]">
                   Join Now
                 </Link>
+
+                {/* Advanced Notification Dropdown */}
+                <div className="relative ml-2">
+                  <button 
+                    onClick={() => setShowNotes(!showNotes)}
+                    className="w-11 h-11 rounded-full bg-foreground/5 border border-foreground/10 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-colors hover:border-primary/50 text-foreground group relative"
+                  >
+                    <Bell className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    <span className="absolute top-2.5 right-2 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-background animate-pulse" />
+                  </button>
+                  
+                  <AnimatePresence>
+                    {showNotes && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 mt-4 w-80 bg-background/95 backdrop-blur-xl border border-foreground/10 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] rounded-2xl overflow-hidden z-50 origin-top-right text-left"
+                      >
+                        <div className="p-4 border-b border-foreground/10 flex justify-between items-center bg-foreground/5 relative overflow-hidden">
+                          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-2xl pointer-events-none -mr-16 -mt-16" />
+                          <h3 className="font-bold text-white relative z-10">Notifications</h3>
+                          <span className="text-[10px] bg-primary/20 text-primary px-2 py-1 rounded-full font-black tracking-widest relative z-10">2 NEW</span>
+                        </div>
+                        
+                        <div className="max-h-[300px] overflow-y-auto">
+                          {notifications.map((note, i) => (
+                            <div key={i} className={`p-4 border-b border-foreground/5 hover:bg-foreground/5 transition-colors cursor-pointer group ${note.unread ? 'bg-primary/5' : ''}`}>
+                              <h4 className={`text-sm tracking-wide flex justify-between ${note.unread ? 'font-bold text-white' : 'font-medium text-gray-300'}`}>
+                                {note.title}
+                                {note.unread && <span className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 group-hover:scale-150 transition-transform" />}
+                              </h4>
+                              <p className="text-xs text-gray-400 mt-1 line-clamp-2 leading-relaxed">{note.desc}</p>
+                              <span className="text-[10px] text-primary/60 mt-2 block tracking-wider font-bold">{note.time}</span>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <Link 
+                          href="/notification-service" 
+                          onClick={() => setShowNotes(false)} 
+                          className="block p-4 text-center text-sm font-bold text-primary hover:bg-primary/10 transition-colors uppercase tracking-widest"
+                        >
+                          View All Activity
+                        </Link>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 <Link href="/profile" className="w-11 h-11 rounded-full bg-foreground/5 border border-foreground/10 flex items-center justify-center hover:bg-primary/20 hover:text-primary transition-colors hover:border-primary/50 text-foreground group ml-2" title="User Profile">
                   <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
                 </Link>
@@ -82,6 +141,7 @@ export default function Navbar() {
                  { name: 'Services', href: '/#services' },
                  { name: 'Memberships', href: '/#memberships' },
                  { name: 'Locations', href: '/#locations' },
+                 { name: 'Contact', href: '/#contact' },
                ].map((item) => (
                   <Link 
                     key={item.name} 
@@ -100,6 +160,10 @@ export default function Navbar() {
                     Join Now
                   </Link>
                 </div>
+                <Link href="/notification-service" onClick={() => setIsOpen(false)} className="w-full mt-4 flex items-center justify-between text-center bg-primary/10 hover:bg-primary/20 text-primary px-6 py-4 rounded-xl font-bold transition-colors border border-primary/20">
+                  <div className="flex items-center gap-2"><Bell className="w-5 h-5" /> Activity Alerts</div>
+                  <span className="bg-red-500 text-white text-[10px] px-2 py-1 rounded-full tracking-widest animate-pulse">2 NEW</span>
+                </Link>
                 <Link href="/profile" onClick={() => setIsOpen(false)} className="w-full mt-4 flex items-center justify-center gap-2 text-center bg-foreground/5 hover:bg-foreground/10 text-foreground px-6 py-4 rounded-xl font-bold transition-colors">
                   <User className="w-5 h-5" /> Profile Dashboard
                 </Link>

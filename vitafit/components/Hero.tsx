@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Activity } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -36,16 +37,20 @@ export default function Hero() {
           <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300 mb-10">
             Experience unmatched accessibility with over 24 state-of-the-art locations and 100,000 sq ft of dedicated workout space.
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold text-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2 transform hover:scale-105 shadow-lg shadow-primary/25">
-              Explore Memberships <ArrowRight className="w-5 h-5" />
-            </button>
-            <button className="px-8 py-4 bg-foreground/5 border border-foreground/10 text-foreground rounded-full font-bold text-lg hover:bg-foreground/10 transition-all flex items-center justify-center gap-2 backdrop-blur-sm">
-              View Locations
-            </button>
-          </div>
-        </motion.div>
-      </div>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">
+              <Link href="/#memberships">
+                <button className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-bold text-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2 transform hover:scale-105 shadow-[0_0_20px_rgba(239,68,68,0.3)] hover:shadow-[0_0_30px_rgba(239,68,68,0.5)]">
+                  Explore Memberships <ArrowRight className="w-5 h-5" />
+                </button>
+              </Link>
+              <Link href="/#locations">
+                <button className="px-8 py-4 bg-foreground/5 border border-foreground/10 text-foreground rounded-full font-bold text-lg hover:bg-foreground/10 transition-all flex items-center justify-center gap-2 backdrop-blur-sm">
+                  View Locations
+                </button>
+              </Link>
+            </div>
+          </motion.div>
+        </div>
     </div>
   );
 }
