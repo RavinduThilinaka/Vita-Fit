@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'users',
-    'knox'
+    'knox',
+    'workout'
 ]
 
 MIDDLEWARE = [
