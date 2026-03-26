@@ -11,6 +11,8 @@ urlpatterns = [
     path('logoutall/',knox_views.LogoutAllView.as_view(), name='knox_logout'),
     path('api/workout/', include('workout.urls')),
     path('api/diet-plan/', include('diet_plan.urls')),
-    path('api/progress/', include('progress.urls'))
+    path('api/progress/', include('progress.urls')),
+    path('api/progress/', include('nutrition.urls')),
+    path('api/nutrition/', include('nutrition.urls')),
 
 ]

@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'knox',
     'workout',
     'diet_plan',
-    'progress'
+    'progress',
+    'nutrition'
 ]
 
 MIDDLEWARE = [
