@@ -1,3 +1,4 @@
+# users/serializers.py
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
@@ -24,16 +25,23 @@ class RegisterSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'age',
-            'gender'
+            'gender',
+            'role'  # Add role to registration
         )
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'role': {'required': False}  # Role is optional, defaults to 'user'
+        }
 
     def create(self, validated_data):
+        # Ensure role is set to 'user' if not provided
+        if 'role' not in validated_data:
+            validated_data['role'] = 'user'
         user = User.objects.create_user(**validated_data)
         return user
 
 
-# ✅ ADD THIS (for login response fix)
+# User serializer with role included
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -43,5 +51,6 @@ class UserSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'age',
-            'gender'
+            'gender',
+            'role'  # Include role in response
         )
