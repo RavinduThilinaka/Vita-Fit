@@ -175,4 +175,4 @@ vitafit_microservices/
 🏃‍♂️ Running Services
 
 cd ~/vitafit_microservices
-python vitafit_services.py
+~/vitafit_microservices> python vitafit_services.py
