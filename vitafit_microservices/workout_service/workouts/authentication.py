@@ -1,50 +1,60 @@
 import requests
 from django.conf import settings
-from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
 
+
 class TokenAuthenticationMiddleware:
     """Middleware to validate token with User Service"""
-    
+
     def __init__(self, get_response):
         self.get_response = get_response
-    
+
     def __call__(self, request):
-        # Skip token validation for swagger and admin
+
+        # ✅ Skip validation for public routes
         if request.path.startswith('/swagger') or request.path.startswith('/admin') or request.path.startswith('/redoc'):
             return self.get_response(request)
-        
-        # Get token from Authorization header
+
+        # ✅ Get Authorization header
         auth_header = request.headers.get('Authorization', '')
-        token = auth_header.replace('Token ', '').replace('Bearer ', '')
-        
-        if not token:
+
+        if not auth_header:
             return JsonResponse(
-                {'error': 'Authentication token is required'}, 
+                {'error': 'Authorization header missing'},
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        
-        # Validate token with User Service
+
+        # ✅ Support both Token and Bearer
+        if auth_header.startswith('Token '):
+            token = auth_header.split(' ')[1]
+        elif auth_header.startswith('Bearer '):
+            token = auth_header.split(' ')[1]
+        else:
+            return JsonResponse(
+                {'error': 'Invalid token format'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
+        # ✅ Call User Service
         try:
             response = requests.post(
                 settings.USER_SERVICE_URL,
                 json={'token': token},
                 timeout=5
             )
-            
+
             if response.status_code == 200:
-                # Token is valid, add user info to request
                 request.user_info = response.json()
                 return self.get_response(request)
-            else:
-                return JsonResponse(
-                    {'error': 'Invalid or expired token'}, 
-                    status=status.HTTP_401_UNAUTHORIZED
-                )
-                
+
+            return JsonResponse(
+                {'error': 'Invalid or expired token'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+
         except requests.exceptions.RequestException:
             return JsonResponse(
-                {'error': 'Unable to validate token. Service unavailable.'}, 
+                {'error': 'User Service unavailable'},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE
             )

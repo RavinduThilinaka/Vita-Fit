@@ -51,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'progresses.authentication.TokenAuthenticationMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'progress_service.urls'

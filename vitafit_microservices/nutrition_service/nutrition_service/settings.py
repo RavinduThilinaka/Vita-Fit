@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'supplements.authentication.TokenAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'nutrition_service.urls'
