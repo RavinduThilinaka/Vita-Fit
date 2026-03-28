@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-tull+9!xfob-b8zfa_*e2(k$prq#t%(3duak8=p+g2&=5mfh#z'
+SECRET_KEY = 'django-insecure-@a%-(ril2%h8d3cx%b_lrvtzlwh!)z^%l$fim*^o7=7v^qlfe%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -40,9 +40,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
-    'diet_plans',
+    'diet',
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -52,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'diet_plans.authentication.TokenAuthenticationMiddleware',
+    'diet.authentication.TokenAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'diet_service.urls'
@@ -126,5 +125,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 USER_SERVICE_URL = 'http://localhost:8001/api/verify-token/'
