@@ -1,0 +1,8 @@
+from django.contrib import admin
+from .models import Workout
+
+@admin.register(Workout)
+class WorkoutAdmin(admin.ModelAdmin):
+    list_display = ('name', 'duration_minutes', 'calories_burn', 'difficulty')
+    list_filter = ('difficulty',)
+    search_fields = ('name', 'description')
