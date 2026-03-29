@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 // API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001/";
 
 // Types
 export interface LoginCredentials {
@@ -36,7 +36,7 @@ export async function login(credentials: LoginCredentials): Promise<{
   user?: User;
 }> {
   try {
-    const response = await fetch(`${API_BASE_URL}/login/`, {
+    const response = await fetch(`${API_BASE_URL}/api/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export async function login(credentials: LoginCredentials): Promise<{
 // Register action
 export async function register(userData: any): Promise<{ success: boolean; error?: string; user?: User }> {
   try {
-    const response = await fetch(`${API_BASE_URL}/register/`, {
+    const response = await fetch(`${API_BASE_URL}/api/register/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -134,7 +134,7 @@ export async function logout(): Promise<void> {
   const token = cookieStore.get("auth_token")?.value;
   if (token) {
     try {
-      await fetch(`${API_BASE_URL}/logout/`, {
+      await fetch(`${API_BASE_URL}/api/logout/`, {
         method: "POST",
         headers: {
           "Authorization": `Token ${token}`,
